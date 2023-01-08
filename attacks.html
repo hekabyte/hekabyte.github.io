@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+		<style>
+			body {
+				background: #333;
+			}
+
+			.container {
+				border: 1px solid #000;
+				width: 500px;
+				height: 500px;
+				position: relative;
+				background: #000;
+				user-select: none;
+			}
+
+			.entity {
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				border-width: 6px;
+				border-style: solid;
+				background: #FFF;
+				cursor: pointer;
+			}
+
+			.entity.attacker {
+				left: 100px;
+				top: 300px;
+				border-color: #F36;
+			}
+
+			.entity.target {
+				right: 100px;
+				top: 100px;
+				border-color: #FC3;
+			}
+
+			.entity.target.moving {
+				border-color: #0C9;
+			}
+
+			.stats {
+				bottom: 0px;
+				color: #FFF;
+				display: none;
+			}
+
+			.instructions {
+				color: #FFF;
+			}
+
+			.red {
+				color: #F36;
+				font-weight: bold;
+			}
+
+			.yellow {
+				color: #FC3;
+				font-weight: bold;
+			}
+		</style>
+  </head>
+  <body>
+		<section>
+			<div id="container" class="container">
+				<div id="target" class="entity target">
+				</div>
+
+				<div id="attacker" class="entity attacker">
+				</div>
+
+				<div class="stats">
+					<div>total: <span id="total-percent">??</span>%</div>
+					<div>keyframe: <span id="keyframe-percent">??</span>%</div>
+					<div>distance: <span id="relative-distance">??</span>%</div>
+					<div><span id="from-distance">??</span> to <span id="to-distance">??</span></div>
+				</div>
+			</div>
+
+			<div class="instructions">
+				<p>Drag the <span class="red">red</span> square to move the attacking entity.</p>
+				<p>Click the <span class="yellow">yellow</span> square to toggle target movement.</p>
+			</div>
+		</section>
+  </body>
+	<script src="./attacks/index.js"></script>
+</html>
