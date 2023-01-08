@@ -9,10 +9,9 @@ const FROM_DISTANCE_LABEL = document.getElementById('from-distance');
 const TO_DISTANCE_LABEL = document.getElementById('to-distance');
 
 const ONE_SECOND = 1000;
-const ATTACK_DURATION = ONE_SECOND * 0.5;
 const MIN_ATTACK_DISTANCE = 100;
 
-const KEYFRAMES = [
+let KEYFRAMES = [
 	[0.00,  0.00],
 	[0.10, -0.25],
 	[0.5,   1.25],
@@ -39,6 +38,7 @@ let TARGET_Y_DIRECTION = 0;
 let ATTACKER_X_DIRECTION = 0;
 let ATTACKER_Y_DIRECTION = 0;
 let MOVING = false;
+let ATTACK_DURATION = ONE_SECOND * 0.5;
 
 function getSurroundingKeyframes(percent_through) {
 	let index = KEYFRAMES.length;
@@ -71,16 +71,10 @@ function getEndY() {
 }
 
 function getDistance(x1, y1, x2, y2) {
-	return Math.sqrt(Math.pow(x2 - x1) + Math.pow(y2 - y1));
+	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
 function getPointAtDistance(percent) {
-	const distance = getDistance(ATTACKER_X, ATTACKER_Y, TARGET_X, TARGET_Y);
-
-	if (distance < MIN_ATTACK_DISTANCE) {
-		// WORKING HERE
-	}
-
 	const start_x = getStartX();
 	const start_y = getStartY();
 	const end_x = getEndX();
@@ -109,6 +103,19 @@ function tick() {
 function performAttack() {
 	ATTACKING = true;
 	START_TIME = Date.now();
+
+	const distance = getDistance(ATTACKER_X, ATTACKER_Y, TARGET_X, TARGET_Y);
+	const max_leash = 1;
+	const leash = Math.max(0.25, max_leash - (distance / 200));
+
+	KEYFRAMES = [
+		[0.00,  0.00],
+		[0.10,  -leash],
+		[0.5,   1 + leash],
+		[1.00,  0.00]
+	];
+
+	ATTACK_DURATION = Math.max(200, Math.min(400, distance * 3));
 }
 
 function randomBetween(min, max) {
